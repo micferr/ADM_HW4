@@ -1,3 +1,5 @@
+# The utilities in the provided helper notebook, in a simple Python file for simplicity.
+
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io.wavfile
@@ -12,12 +14,17 @@ from tqdm.notebook import tqdm
 N_TRACKS = 1413
 HOP_SIZE = 512
 OFFSET = 1.0
-DURATION = 30 # TODO: to be tuned!
-THRESHOLD = 0 # TODO: to be tuned!
-data_folder = Path("data/mp3s-32k/")
+DURATION = 10
+THRESHOLD = 0
+data_folder = Path("datasets/mp3s-32k/")
 mp3_tracks = data_folder.glob("*/*/*.mp3")
 tracks = data_folder.glob("*/*/*.wav")
 
+
+ECHONEST_PATH = Path("datasets/ex2/echonest.csv")
+FEATURES_PATH = Path("datasets/ex2/features.csv")
+TRACKS_PATH = Path("datasets/ex2/tracks.csv")
+MERGED_DATASET_PATH = Path("merged_dataset.csv")
 
 def convert_mp3_to_wav(audio: str) -> str:
     """Convert an input MP3 audio track into a WAV file.
@@ -92,3 +99,12 @@ def load_audio_peaks(audio, offset, duration, hop_size):
 def convert_all_mp3s():
     for track in tqdm(mp3_tracks, total=N_TRACKS):
         convert_mp3_to_wav(str(track))
+    print('Done!')
+
+
+def plot_tracks():
+    for idx, audio in enumerate(tracks):
+        if idx >= 2:
+            break
+        track, sr, onset_env, peaks = load_audio_peaks(audio, OFFSET, DURATION, HOP_SIZE)
+        plot_spectrogram_and_peaks(track, sr, peaks, onset_env)

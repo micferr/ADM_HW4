@@ -1,4 +1,11 @@
+__pycache__/
 .DS_Store
 .idea/
 .venv/
 datasets/
+clusters.csv
+merged_dataset.csv
+svd_dataset.csv
+peaks.pkl
+tracks_signatures.pkl
+buckets.pkl
